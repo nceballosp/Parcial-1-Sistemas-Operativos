@@ -101,9 +101,23 @@ Persona generarPersona() {
     double ingresos = randomDouble(10000000, 500000000);   // 10M a 500M COP
     double patrimonio = randomDouble(0, 2000000000);       // 0 a 2,000M COP
     double deudas = randomDouble(0, patrimonio * 0.7);     // Deudas hasta el 70% del patrimonio
-    bool declarante = (ingresos > 50000000) && (rand() % 100 > 30); // Probabilidad 70% si ingresos > 50M
+    std::string grupo;
+    int lastDigits = std::stoi(id.substr(id.length()-2));
+    if(lastDigits < 40 ){
+        grupo = "A";
+    }
+    else if (lastDigits > 39 && lastDigits < 80)
+    {
+        grupo = "B";
+    }
+        else if (lastDigits > 79 && lastDigits < 100)
+    {
+        grupo = "C";
+    }
     
-    return Persona(nombre, apellido, id, ciudad, fecha, ingresos, patrimonio, deudas, declarante);
+    
+    
+    return Persona(nombre, apellido, id, ciudad, fecha, ingresos, patrimonio, deudas, grupo);
 }
 
 /**

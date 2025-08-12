@@ -17,12 +17,12 @@ private:
     std::string nombre;           // Nombre de pila
     std::string apellido;         // Apellidos
     std::string id;               // Identificador único (cédula)
-    std::string ciudadNacimiento; // Ciudad de nacimiento
+    std::string ciudadResidencia; // Ciudad de Residencia
     std::string fechaNacimiento;  // Fecha de nacimiento en formato DD/MM/AAAA
     double ingresosAnuales;       // Ingresos anuales en pesos colombianos
     double patrimonio;            // Patrimonio total (activos)
     double deudas;                // Deudas totales (pasivos)
-    bool declaranteRenta;         // Si es declarante de renta
+    std::string grupoDeclaracion; // Grupo de declaracion(A/B/C)
 
 public:
     /**
@@ -34,18 +34,18 @@ public:
      */
     Persona(std::string nom, std::string ape, std::string id, 
             std::string ciudad, std::string fecha, double ingresos, 
-            double patri, double deud, bool declara);
+            double patri, double deud, std::string declara);
     
     // Métodos de acceso (getters) - Implementados inline para eficiencia
     std::string getNombre() const { return nombre; }
     std::string getApellido() const { return apellido; }
     std::string getId() const { return id; }
-    std::string getCiudadNacimiento() const { return ciudadNacimiento; }
+    std::string getCiudadNacimiento() const { return ciudadResidencia; }
     std::string getFechaNacimiento() const { return fechaNacimiento; }
     double getIngresosAnuales() const { return ingresosAnuales; }
     double getPatrimonio() const { return patrimonio; }
     double getDeudas() const { return deudas; }
-    bool getDeclaranteRenta() const { return declaranteRenta; }
+    std::string getGrupoDeclaracion() const { return grupoDeclaracion; }
 
     /**
      * Muestra toda la información de la persona de forma detallada.

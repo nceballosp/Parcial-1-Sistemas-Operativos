@@ -10,16 +10,16 @@
  */
 Persona::Persona(std::string nom, std::string ape, std::string id, 
                  std::string ciudad, std::string fecha, double ingresos, 
-                 double patri, double deud, bool declara)
+                 double patri, double deud, std::string declara)
     : nombre(std::move(nom)), 
       apellido(std::move(ape)), 
       id(std::move(id)), 
-      ciudadNacimiento(std::move(ciudad)),
+      ciudadResidencia(std::move(ciudad)),
       fechaNacimiento(std::move(fecha)), 
       ingresosAnuales(ingresos), 
       patrimonio(patri),
       deudas(deud), 
-      declaranteRenta(declara) {}
+      grupoDeclaracion(declara) {}
 
 /**
  * Implementación de mostrar.
@@ -31,13 +31,13 @@ Persona::Persona(std::string nom, std::string ape, std::string id,
 void Persona::mostrar() const {
     std::cout << "-------------------------------------\n";
     std::cout << "[" << id << "] Nombre: " << nombre << " " << apellido << "\n";
-    std::cout << "   - Ciudad de nacimiento: " << ciudadNacimiento << "\n";
+    std::cout << "   - Ciudad de nacimiento: " << ciudadResidencia << "\n";
     std::cout << "   - Fecha de nacimiento: " << fechaNacimiento << "\n\n";
     std::cout << std::fixed << std::setprecision(2); // Formato de números
     std::cout << "   - Ingresos anuales: $" << ingresosAnuales << "\n";
     std::cout << "   - Patrimonio: $" << patrimonio << "\n";
     std::cout << "   - Deudas: $" << deudas << "\n";
-    std::cout << "   - Declarante de renta: " << (declaranteRenta ? "Sí" : "No") << "\n";
+    std::cout << "   - Grupo de declaracion: " << (grupoDeclaracion) << "\n";
 }
 
 /**
@@ -49,6 +49,7 @@ void Persona::mostrar() const {
  */
 void Persona::mostrarResumen() const {
     std::cout << "[" << id << "] " << nombre << " " << apellido
-              << " | " << ciudadNacimiento 
-              << " | $" << std::fixed << std::setprecision(2) << ingresosAnuales;
+              << " | " << ciudadResidencia
+              << " | $" << std::fixed << std::setprecision(2) << ingresosAnuales
+              << " | " << "Grupo renta:" << grupoDeclaracion;
 }

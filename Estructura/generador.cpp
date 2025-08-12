@@ -78,7 +78,7 @@ Persona generarPersona() {
     // Genera identificadores únicos
     p.id = generarID();
     // Ciudad aleatoria de Colombia
-    p.ciudadNacimiento = ciudadesColombia[rand() % ciudadesColombia.size()];
+    p.ciudadResidencia = ciudadesColombia[rand() % ciudadesColombia.size()];
     // Fecha aleatoria
     p.fechaNacimiento = generarFechaNacimiento();
     
@@ -90,7 +90,18 @@ Persona generarPersona() {
     // Deudas hasta el 70% del patrimonio
     p.deudas = randomDouble(0, p.patrimonio * 0.7);
     // 70% probabilidad de ser declarante si gana > 50 millones
-    p.declaranteRenta = (p.ingresosAnuales > 50000000) && (rand() % 100 > 30);
+    int lastDigits = std::stoi(p.id.substr(p.id.length()-2));
+    if(lastDigits < 40 ){
+        p.grupoDeclaracion = "A";
+    }
+    else if (lastDigits > 39 && lastDigits < 80)
+    {
+        p.grupoDeclaracion = "B";
+    }
+        else if (lastDigits > 79 && lastDigits < 100)
+    {
+        p.grupoDeclaracion= "C";
+    }
     
     return p; // Retorna la estructura completa
 }
