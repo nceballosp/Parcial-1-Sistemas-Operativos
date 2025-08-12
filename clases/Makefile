@@ -25,7 +25,7 @@ CXXFLAGS = -Wall -Wextra -pedantic -std=c++14 -O2  # Flags de compilación:
 # PARA QUÉ: Automatizar el proceso de compilación
 SRC = main.cpp persona.cpp generador.cpp monitor.cpp  # Fuentes principales
 OBJ = $(SRC:.cpp=.o)            # Generar nombres de objetos (.o) a partir de fuentes
-EXEC = programa                 # Nombre del ejecutable final
+EXEC = programa.exe             # Nombre del ejecutable final
 
 # Targets especiales (phony targets)
 # ----------------------------------

@@ -7,7 +7,7 @@ CXXFLAGS := -Wall -Wextra -pedantic -std=c++14  # Usando C++14 para std::make_un
 # Archivos fuente y objetos
 SRCS := generador.cpp main.cpp monitor.cpp
 OBJS := $(SRCS:.cpp=.o)
-EXEC := programa
+EXEC := programa.exe
 
 # Objetivo principal: compilar el ejecutable
 all: $(EXEC)
