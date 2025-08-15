@@ -4,6 +4,7 @@
 #include <string>
 #include <iostream>
 #include <iomanip>
+#include <tuple>
 
 /**
  * Clase que representa una persona con datos personales y financieros.
@@ -18,13 +19,14 @@ private:
     std::string apellido;         // Apellidos
     std::string id;               // Identificador único (cédula)
     std::string ciudadResidencia; // Ciudad de Residencia
-    std::string fechaNacimiento;  // Fecha de nacimiento en formato DD/MM/AAAA
+    std::tuple<int,int,int> fechaNacimiento;  // Fecha de nacimiento en formato DD/MM/AAAA
     double ingresosAnuales;       // Ingresos anuales en pesos colombianos
     double patrimonio;            // Patrimonio total (activos)
     double deudas;                // Deudas totales (pasivos)
     std::string grupoDeclaracion; // Grupo de declaracion(A/B/C)
 
 public:
+    Persona() = default;
     /**
      * Constructor para inicializar todos los atributos de la persona.
      * 
@@ -33,7 +35,7 @@ public:
      * PARA QUÉ: Construir objetos Persona completos y válidos.
      */
     Persona(std::string nom, std::string ape, std::string id, 
-            std::string ciudad, std::string fecha, double ingresos, 
+            std::string ciudad, std::tuple<int,int,int> fecha, double ingresos, 
             double patri, double deud, std::string declara);
     
     // Métodos de acceso (getters) - Implementados inline para eficiencia
@@ -41,7 +43,7 @@ public:
     std::string getApellido() const { return apellido; }
     std::string getId() const { return id; }
     std::string getCiudadNacimiento() const { return ciudadResidencia; }
-    std::string getFechaNacimiento() const { return fechaNacimiento; }
+    std::tuple<int,int,int> getFechaNacimiento() const { return fechaNacimiento; }
     double getIngresosAnuales() const { return ingresosAnuales; }
     double getPatrimonio() const { return patrimonio; }
     double getDeudas() const { return deudas; }

@@ -3,6 +3,7 @@
 
 #include "persona.h"
 #include <vector>
+#include <unordered_map>
 
 // Funciones para generación de datos aleatorios
 
@@ -13,7 +14,7 @@
  * CÓMO: Combinando números aleatorios para día, mes y año.
  * PARA QUÉ: Inicializar el atributo fechaNacimiento de Persona.
  */
-std::string generarFechaNacimiento();
+std::tuple<int,int,int> generarFechaNacimiento();
 
 /**
  * Genera un ID único secuencial.
@@ -62,6 +63,12 @@ std::vector<Persona> generarColeccion(int n);
  * @param id ID a buscar.
  * @return Puntero a la persona encontrada o nullptr si no se encuentra.
  */
-const Persona* buscarPorID(const std::vector<Persona>& personas, const std::string& id);
+Persona buscarLongevaPaisValor(const std::vector<Persona> personas);
+
+const Persona* buscarLongevaPaisReferencia(const std::vector<Persona> &personas);
+
+std::unordered_map<std::string,const Persona*> mostrarPersonasLongevasCiudadReferencia(const std::vector<Persona> &personas);
+
+std::unordered_map<std::string,Persona> mostrarPersonasLongevasCiudadValor(const std::vector<Persona> personas);
 
 #endif // GENERADOR_H

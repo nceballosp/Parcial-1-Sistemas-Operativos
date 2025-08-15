@@ -9,7 +9,7 @@
  * PARA QUÉ: Eficiencia y correcta construcción del objeto.
  */
 Persona::Persona(std::string nom, std::string ape, std::string id, 
-                 std::string ciudad, std::string fecha, double ingresos, 
+                 std::string ciudad, std::tuple<int,int,int> fecha, double ingresos, 
                  double patri, double deud, std::string declara)
     : nombre(std::move(nom)), 
       apellido(std::move(ape)), 
@@ -32,7 +32,7 @@ void Persona::mostrar() const {
     std::cout << "-------------------------------------\n";
     std::cout << "[" << id << "] Nombre: " << nombre << " " << apellido << "\n";
     std::cout << "   - Ciudad de nacimiento: " << ciudadResidencia << "\n";
-    std::cout << "   - Fecha de nacimiento: " << fechaNacimiento << "\n\n";
+    std::cout << "   - Fecha de nacimiento: " << std::get<0>(fechaNacimiento) <<"/"<<std::get<1>(fechaNacimiento)<<"/"<<std::get<2>(fechaNacimiento)<<"\n";
     std::cout << std::fixed << std::setprecision(2); // Formato de números
     std::cout << "   - Ingresos anuales: $" << ingresosAnuales << "\n";
     std::cout << "   - Patrimonio: $" << patrimonio << "\n";

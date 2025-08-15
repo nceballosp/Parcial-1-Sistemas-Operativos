@@ -11,7 +11,7 @@
 # CÓMO: Definir variables para compilador y flags
 # PARA QUÉ: Facilita modificaciones y asegura consistencia
 CXX = g++                         # Compilador C++ (GNU)
-CXXFLAGS = -Wall -Wextra -pedantic -std=c++14 -O2  # Flags de compilación:
+CXXFLAGS = -Wall -g -Wextra -pedantic -std=c++17 -O2  # Flags de compilación:
                                 # -Wall: Todas las advertencias
                                 # -Wextra: Advertencias adicionales
                                 # -pedantic: Cumplimiento estricto del estándar

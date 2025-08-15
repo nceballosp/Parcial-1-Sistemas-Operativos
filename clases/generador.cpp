@@ -4,7 +4,9 @@
 #include <random>    // std::mt19937, std::uniform_real_distribution
 #include <vector>
 #include <algorithm> // std::find_if
-
+#include <unordered_map>
+#include <iostream>
+#include <tuple>
 // Bases de datos para generación realista
 
 // Nombres femeninos comunes en Colombia
@@ -39,11 +41,11 @@ const std::vector<std::string> ciudadesColombia = {
  * CÓMO: Día (1-28), mes (1-12), año (1960-2009).
  * PARA QUÉ: Atributo fechaNacimiento de Persona.
  */
-std::string generarFechaNacimiento() {
+std::tuple<int,int,int> generarFechaNacimiento() {
     int dia = 1 + rand() % 28;       // Día: 1 a 28 (evita problemas con meses)
     int mes = 1 + rand() % 12;        // Mes: 1 a 12
     int anio = 1960 + rand() % 50;    // Año: 1960 a 2009
-    return std::to_string(dia) + "/" + std::to_string(mes) + "/" + std::to_string(anio);
+    return {dia,mes,anio};
 }
 
 /**
@@ -95,7 +97,7 @@ Persona generarPersona() {
     // Genera los demás atributos
     std::string id = generarID();
     std::string ciudad = ciudadesColombia[rand() % ciudadesColombia.size()];
-    std::string fecha = generarFechaNacimiento();
+    std::tuple<int,int,int> fecha = generarFechaNacimiento();
     
     // Genera datos financieros realistas
     double ingresos = randomDouble(10000000, 500000000);   // 10M a 500M COP
@@ -138,21 +140,96 @@ std::vector<Persona> generarColeccion(int n) {
     return personas;
 }
 
-/**
- * Implementación de buscarPorID.
- * 
- * POR QUÉ: Encontrar una persona por su ID en una colección.
- * CÓMO: Usando un algoritmo de búsqueda secuencial (lineal).
- * PARA QUÉ: Para operaciones de búsqueda en la aplicación.
- */
-const Persona* buscarPorID(const std::vector<Persona>& personas, const std::string& id) {
-    // Usa find_if con una lambda para buscar por ID
-    auto it = std::find_if(personas.begin(), personas.end(),
-        [&id](const Persona& p) { return p.getId() == id; });
-    
-    if (it != personas.end()) {
-        return &(*it); // Devuelve puntero a la persona encontrada
-    } else {
-        return nullptr; // No encontrado
+Persona buscarLongevaPaisValor(std::vector<Persona> personas){
+    Persona personaLongeva = personas[0];
+    for(const auto &persona : personas){
+        auto [diaP,mesP,anioP] =  persona.getFechaNacimiento();
+        auto [diaPL,mesPL,anioPL] =  personaLongeva.getFechaNacimiento();
+        if(anioP!=anioPL){
+            personaLongeva = anioP < anioPL ? persona : personaLongeva; 
+        }
+        else if (mesP!=mesPL)
+        {
+            personaLongeva = mesP < mesPL ? persona : personaLongeva;
+        }
+        else{
+            personaLongeva = diaP < diaPL ? persona : personaLongeva;
+        }
     }
+    return personaLongeva;
+}
+
+const Persona* buscarLongevaPaisReferencia(const std::vector<Persona> &personas){
+    const Persona* personaLongeva = &personas[0];
+    for(const auto &persona : personas){
+        auto [diaP,mesP,anioP] =  persona.getFechaNacimiento();
+        auto [diaPL,mesPL,anioPL] =  personaLongeva->getFechaNacimiento();
+        if(anioP!=anioPL){
+            personaLongeva = anioP < anioPL ? &persona : personaLongeva;
+        }
+        else if (mesP!=mesPL)
+        {
+            personaLongeva = mesP < mesPL ? &persona : personaLongeva;
+        }
+        else{
+            personaLongeva = diaP < diaPL ? &persona : personaLongeva;
+        }
+    }
+    return personaLongeva;
+}
+
+std::unordered_map<std::string,const Persona*> mostrarPersonasLongevasCiudadReferencia(const std::vector<Persona> &personas){
+    std::unordered_map<std::string,const Persona*> personaLongevaCiudad;
+    
+    for(const auto &persona : personas){
+        auto [diaP,mesP,anioP] =  persona.getFechaNacimiento();
+        //revisa si ya existe una llave para la ciudad evaluada
+        if(personaLongevaCiudad.count(persona.getCiudadNacimiento()) == 0){
+            personaLongevaCiudad[persona.getCiudadNacimiento()] = &persona;
+        }
+        else
+        {
+            auto [diaPL,mesPL,anioPL] =  personaLongevaCiudad[persona.getCiudadNacimiento()]->getFechaNacimiento();
+            if(anioP!=anioPL){
+                personaLongevaCiudad[persona.getCiudadNacimiento()] = anioP < anioPL ? &persona : personaLongevaCiudad[persona.getCiudadNacimiento()]; 
+            }
+            else if (mesP!=mesPL)
+            {
+                personaLongevaCiudad[persona.getCiudadNacimiento()] = mesP < mesPL ? &persona : personaLongevaCiudad[persona.getCiudadNacimiento()];
+            }
+            else{
+                personaLongevaCiudad[persona.getCiudadNacimiento()] = diaP < diaPL ? &persona : personaLongevaCiudad[persona.getCiudadNacimiento()];
+            }
+        }
+        
+    }
+    return personaLongevaCiudad;
+}
+std::unordered_map<std::string,Persona> mostrarPersonasLongevasCiudadValor(const std::vector<Persona> personas){
+    //arreglar no constructor default
+    std::unordered_map<std::string,Persona> personaLongevaCiudad;
+    
+    for(const auto &persona : personas){
+        auto [diaP,mesP,anioP] =  persona.getFechaNacimiento();
+        //revisa si ya existe una llave para la ciudad evaluada
+        if(personaLongevaCiudad.count(persona.getCiudadNacimiento()) == 0){
+            personaLongevaCiudad.emplace(persona.getCiudadNacimiento(),persona);
+        }
+        else
+        {
+            auto [diaPL,mesPL,anioPL] =  personaLongevaCiudad[persona.getCiudadNacimiento()].getFechaNacimiento();
+            if(anioP!=anioPL){
+                personaLongevaCiudad[persona.getCiudadNacimiento()] = anioP < anioPL ? persona : personaLongevaCiudad[persona.getCiudadNacimiento()]; 
+            }
+            else if (mesP!=mesPL)
+            {
+                personaLongevaCiudad[persona.getCiudadNacimiento()] = mesP < mesPL ? persona : personaLongevaCiudad[persona.getCiudadNacimiento()];
+            }
+            else{
+                personaLongevaCiudad[persona.getCiudadNacimiento()] = diaP < diaPL ? persona : personaLongevaCiudad[persona.getCiudadNacimiento()];
+            }
+        }
+        
+    }
+    return personaLongevaCiudad;
 }

@@ -5,6 +5,7 @@
 #include "persona.h"
 #include "generador.h"
 #include "monitor.h"
+#include <unordered_map>
 
 /**
  * Muestra el menú principal de la aplicación.
@@ -17,11 +18,15 @@ void mostrarMenu() {
     std::cout << "\n\n=== MENÚ PRINCIPAL ===";
     std::cout << "\n0. Crear nuevo conjunto de datos";
     std::cout << "\n1. Mostrar resumen de todas las personas";
-    std::cout << "\n2. Mostrar detalle completo por índice";
-    std::cout << "\n3. Buscar persona por ID";
-    std::cout << "\n4. Mostrar estadísticas de rendimiento";
-    std::cout << "\n5. Exportar estadísticas a CSV";
-    std::cout << "\n6. Salir";
+    std::cout << "\n2. Mostrar persona mas longeva en el país";
+    std::cout << "\n3. Mostrar persona mas longeva por ciudad";
+    std::cout << "\n4. Mostrar persona con mayor patrimonio en el país";
+    std::cout << "\n5. Mostrar persona con mayor patrimonio por ciudad";
+    std::cout << "\n6. Mostrar persona con mayor patrimonio por grupo de declaración";
+    std::cout << "\n7. Listar declarantes de renta";
+    std::cout << "\n8. Mostrar estadisticas";
+    std::cout << "\n9. Exportar estadisticas";
+    std::cout << "\n10. Salir";
     std::cout << "\nSeleccione una opción: ";
 }
 
@@ -48,7 +53,6 @@ int main() {
         
         // Variables locales para uso en los casos
         size_t tam = 0;
-        int indice;
         std::string idBusqueda;
         
         // Iniciar medición de tiempo y memoria para la operación actual
@@ -105,42 +109,39 @@ int main() {
                 break;
             }
                 
-            case 2: { // Mostrar detalle por índice
+            // case 2: { // Mostrar detalle por índice
+            //     if (!personas || personas->empty()) {
+            //         std::cout << "\nNo hay datos disponibles. Use opción 0 primero.\n";
+            //         break;
+            //     }
+                
+            //     tam = personas->size();
+            //     std::cout << "\nIngrese el índice (0-" << tam-1 << "): ";
+            //     if(std::cin >> indice) {
+            //         if(indice >= 0 && static_cast<size_t>(indice) < tam) {
+            //             (*personas)[indice].mostrar();
+            //         } else {
+            //             std::cout << "Índice fuera de rango!\n";
+            //         }
+            //     } else {
+            //         std::cout << "Entrada inválida!\n";
+            //         std::cin.clear();
+            //         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            //     }
+                
+            //     double tiempo_detalle = monitor.detener_tiempo();
+            //     long memoria_detalle = monitor.obtener_memoria() - memoria_inicio;
+            //     monitor.registrar("Mostrar detalle", tiempo_detalle, memoria_detalle);
+            //     break;
+            // }
+                
+            case 2: { // Buscar por ID
                 if (!personas || personas->empty()) {
                     std::cout << "\nNo hay datos disponibles. Use opción 0 primero.\n";
                     break;
-                }
+                }                
                 
-                tam = personas->size();
-                std::cout << "\nIngrese el índice (0-" << tam-1 << "): ";
-                if(std::cin >> indice) {
-                    if(indice >= 0 && static_cast<size_t>(indice) < tam) {
-                        (*personas)[indice].mostrar();
-                    } else {
-                        std::cout << "Índice fuera de rango!\n";
-                    }
-                } else {
-                    std::cout << "Entrada inválida!\n";
-                    std::cin.clear();
-                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                }
-                
-                double tiempo_detalle = monitor.detener_tiempo();
-                long memoria_detalle = monitor.obtener_memoria() - memoria_inicio;
-                monitor.registrar("Mostrar detalle", tiempo_detalle, memoria_detalle);
-                break;
-            }
-                
-            case 3: { // Buscar por ID
-                if (!personas || personas->empty()) {
-                    std::cout << "\nNo hay datos disponibles. Use opción 0 primero.\n";
-                    break;
-                }
-                
-                std::cout << "\nIngrese el ID a buscar: ";
-                std::cin >> idBusqueda;
-                
-                if(const Persona* encontrada = buscarPorID(*personas, idBusqueda)) {
+                if(const Persona* encontrada = buscarLongevaPaisReferencia(*personas)) {
                     encontrada->mostrar();
                 } else {
                     std::cout << "No se encontró persona con ID " << idBusqueda << "\n";
@@ -148,19 +149,72 @@ int main() {
                 
                 double tiempo_busqueda = monitor.detener_tiempo();
                 long memoria_busqueda = monitor.obtener_memoria() - memoria_inicio;
-                monitor.registrar("Buscar por ID", tiempo_busqueda, memoria_busqueda);
+                monitor.registrar("Buscar por referencia", tiempo_busqueda, memoria_busqueda);
+                break;
+            }
+            case 3: {
+                if (!personas || personas->empty()) {
+                    std::cout << "\nNo hay datos disponibles. Use opción 0 primero.\n";
+                    break;
+                }                
+
+                Persona encontrada = buscarLongevaPaisValor(*personas);
+                encontrada.mostrar();
+            
+                double tiempo_busqueda = monitor.detener_tiempo();
+                long memoria_busqueda = monitor.obtener_memoria() - memoria_inicio;
+                monitor.registrar("Buscar por valor", tiempo_busqueda, memoria_busqueda);
+                break;
+            }
+            case 4: {
+                if (!personas || personas->empty()) {
+                    std::cout << "\nNo hay datos disponibles. Use opción 0 primero.\n";
+                    break;
+                }                
+
+                std::unordered_map<std::string,const Persona*> resultado = mostrarPersonasLongevasCiudadReferencia(*personas);
+                for (const auto &pair : resultado)
+                {
+                    std::cout <<"\n" << pair.first << ":";
+                    pair.second->mostrar();
+                }
+                
+            
+                double tiempo_busqueda = monitor.detener_tiempo();
+                long memoria_busqueda = monitor.obtener_memoria() - memoria_inicio;
+                monitor.registrar("Mostrar personas mas longevas por ciudad (Referencia)", tiempo_busqueda, memoria_busqueda);
                 break;
             }
                 
-            case 4: // Mostrar estadísticas de rendimiento
+            case 5: {
+                if (!personas || personas->empty()) {
+                    std::cout << "\nNo hay datos disponibles. Use opción 0 primero.\n";
+                    break;
+                }                
+
+                std::unordered_map<std::string,Persona> resultado = mostrarPersonasLongevasCiudadValor(*personas);
+                for (const auto &pair : resultado)
+                {
+                    std::cout <<"\n" << pair.first << ":";
+                    pair.second.mostrar();
+                }
+                
+            
+                double tiempo_busqueda = monitor.detener_tiempo();
+                long memoria_busqueda = monitor.obtener_memoria() - memoria_inicio;
+                monitor.registrar("Mostrar personas mas longevas por ciudad (Valor)", tiempo_busqueda, memoria_busqueda);
+                break;
+            }
+                
+            case 8: // Mostrar estadísticas de rendimiento
                 monitor.mostrar_resumen();
                 break;
                 
-            case 5: // Exportar estadísticas a CSV
+            case 9: // Exportar estadísticas a CSV
                 monitor.exportar_csv();
                 break;
                 
-            case 6: // Salir
+            case 10: // Salir
                 std::cout << "Saliendo...\n";
                 break;
                 
@@ -175,7 +229,7 @@ int main() {
             monitor.mostrar_estadistica("Opción " + std::to_string(opcion), tiempo, memoria);
         }
         
-    } while(opcion != 6);
+    } while(opcion != 10);
     
     return 0;
 }
