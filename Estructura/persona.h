@@ -4,7 +4,7 @@
 #include <string>
 #include <iostream>
 #include <iomanip>
-
+#include <tuple>
 // Estructura que representa una persona con datos personales y fiscales
 struct Persona {
     // Datos básicos de identificación
@@ -12,7 +12,7 @@ struct Persona {
     std::string apellido;         // Apellidos
     std::string id;               // Identificador único
     std::string ciudadResidencia; // Ciudad de residencia en Colombia
-    std::string fechaNacimiento;  // Fecha en formato DD/MM/AAAA
+    std::tuple<int,int,int> fechaNacimiento;  // Fecha de nacimiento en formato DD/MM/AAAA
     
     // Datos fiscales y económicos
     double ingresosAnuales;       // Ingresos anuales en pesos colombianos
@@ -30,7 +30,7 @@ inline void Persona::mostrar() const {
     std::cout << "-------------------------------------\n";
     std::cout << "[" << id << "] Nombre: " << nombre << " " << apellido << "\n";
     std::cout << "   - Ciudad de nacimiento: " << ciudadResidencia << "\n";
-    std::cout << "   - Fecha de nacimiento: " << fechaNacimiento << "\n\n";
+    std::cout << "   - Fecha de nacimiento: " << std::get<0>(fechaNacimiento) <<"/"<<std::get<1>(fechaNacimiento)<<"/"<<std::get<2>(fechaNacimiento)<<"\n";
     std::cout << std::fixed << std::setprecision(2);
     std::cout << "   - Ingresos anuales: $" << ingresosAnuales << "\n";
     std::cout << "   - Patrimonio: $" << patrimonio << "\n";

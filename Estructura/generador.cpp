@@ -1,11 +1,13 @@
 #include "generador.h"
 #include <cstdlib>   // rand(), srand()
 #include <ctime>     // time()
-#include <random>    // Generadores aleatorios modernos
+#include <random>    // std::mt19937, std::uniform_real_distribution
 #include <vector>
-#include <algorithm> // Para find_if
-
-// --- Bases de datos para generación realista ---
+#include <algorithm> // std::find_if
+#include <unordered_map>
+#include <iostream>
+#include <tuple>
+// Bases de datos para generación realista
 
 // Nombres femeninos comunes en Colombia
 const std::vector<std::string> nombresFemeninos = {
@@ -17,8 +19,7 @@ const std::vector<std::string> nombresFemeninos = {
 const std::vector<std::string> nombresMasculinos = {
     "Juan", "Carlos", "José", "James", "Andrés", "Miguel", "Luis", "Pedro", "Alejandro", "Ricardo",
     "Felipe", "David", "Jorge", "Santiago", "Daniel", "Fernando", "Diego", "Rafael", "Martín", "Óscar",
-    "Edison", "Sofia","Camila","Juana","Ana","Laura","Karla","Andrea","Daniela","Alejandra","Martina",
-    "Nelly","María","Nestor","Trinidad","Fernanda", "Carolina", "Lina", "Gertridis"
+    "Edison", "Nestor", "Gertridis"
 };
 
 // Apellidos comunes en Colombia
@@ -33,37 +34,55 @@ const std::vector<std::string> ciudadesColombia = {
     "Manizales", "Pasto", "Neiva", "Villavicencio", "Armenia", "Sincelejo", "Valledupar", "Montería", "Popayán", "Tunja"
 };
 
-// Implementación de funciones generadoras
-
-std::string generarFechaNacimiento() {
-    // Genera día aleatorio (1-28 para simplificar)
-    int dia = 1 + rand() % 28;
-    // Mes aleatorio (1-12)
-    int mes = 1 + rand() % 12;
-    // Año entre 1960-2010
-    int anio = 1960 + rand() % 50;
-    
-    // Convierte a string en formato DD/MM/AAAA
-    return std::to_string(dia) + "/" + std::to_string(mes) + "/" + std::to_string(anio);
+/**
+ * Implementación de generarFechaNacimiento.
+ * 
+ * POR QUÉ: Simular fechas de nacimiento realistas.
+ * CÓMO: Día (1-28), mes (1-12), año (1960-2009).
+ * PARA QUÉ: Atributo fechaNacimiento de Persona.
+ */
+std::tuple<int,int,int> generarFechaNacimiento() {
+    int dia = 1 + rand() % 28;       // Día: 1 a 28 (evita problemas con meses)
+    int mes = 1 + rand() % 12;        // Mes: 1 a 12
+    int anio = 1960 + rand() % 50;    // Año: 1960 a 2009
+    return {dia,mes,anio};
 }
 
+/**
+ * Implementación de generarID.
+ * 
+ * POR QUÉ: Generar identificadores únicos y secuenciales.
+ * CÓMO: Contador estático que inicia en 1000000000 y se incrementa.
+ * PARA QUÉ: Simular números de cédula.
+ */
 std::string generarID() {
-    static long contador = 1000000000; // ID inicial
-    return std::to_string(contador++); // Incrementa después de usar
+    static long contador = 1000000000; // Inicia en 1,000,000,000
+    return std::to_string(contador++); // Convierte a string e incrementa
 }
 
+/**
+ * Implementación de randomDouble.
+ * 
+ * POR QUÉ: Generar números decimales aleatorios en un rango.
+ * CÓMO: Mersenne Twister (mejor que rand()) y distribución uniforme.
+ * PARA QUÉ: Valores de ingresos, patrimonio, etc.
+ */
 double randomDouble(double min, double max) {
-    // Generador moderno Mersenne Twister
-    static std::mt19937 generator(time(nullptr));
-    // Distribución uniforme en rango [min, max]
+    static std::mt19937 generator(time(nullptr)); // Semilla basada en tiempo
     std::uniform_real_distribution<double> distribution(min, max);
     return distribution(generator);
 }
 
+/**
+ * Implementación de generarPersona.
+ * 
+ * POR QUÉ: Crear una persona con datos aleatorios.
+ * CÓMO: Seleccionando aleatoriamente de las bases de datos y generando números.
+ * PARA QUÉ: Generar datos de prueba.
+ */
 Persona generarPersona() {
-    Persona p; // Crea una instancia de la estructura Persona
-    
-    // Decide aleatoriamente si es hombre o mujer
+    // Decide si es hombre o mujer
+    Persona p;
     bool esHombre = rand() % 2;
     
     // Selecciona nombre según género
@@ -71,47 +90,50 @@ Persona generarPersona() {
         nombresMasculinos[rand() % nombresMasculinos.size()] :
         nombresFemeninos[rand() % nombresFemeninos.size()];
     
-    // Combina dos apellidos aleatorios
-    p.apellido = apellidos[rand() % apellidos.size()] + " " + 
-                 apellidos[rand() % apellidos.size()];
+    // Construye apellido compuesto (dos apellidos aleatorios)
+    p.apellido = apellidos[rand() % apellidos.size()];
+    p.apellido += " ";
+    p.apellido += apellidos[rand() % apellidos.size()];
     
-    // Genera identificadores únicos
+    // Genera los demás atributos
     p.id = generarID();
-    // Ciudad aleatoria de Colombia
     p.ciudadResidencia = ciudadesColombia[rand() % ciudadesColombia.size()];
-    // Fecha aleatoria
     p.fechaNacimiento = generarFechaNacimiento();
     
-    // --- Generación de datos económicos realistas ---
-    // Ingresos entre 10 millones y 500 millones COP
-    p.ingresosAnuales = randomDouble(10000000, 500000000);
-    // Patrimonio entre 0 y 2 mil millones COP
-    p.patrimonio = randomDouble(0, 2000000000);
-    // Deudas hasta el 70% del patrimonio
-    p.deudas = randomDouble(0, p.patrimonio * 0.7);
-    // 70% probabilidad de ser declarante si gana > 50 millones
+    // Genera datos financieros realistas
+    p.ingresosAnuales = randomDouble(10000000, 500000000);   // 10M a 500M COP
+    p.patrimonio = randomDouble(0, 2000000000);       // 0 a 2,000M COP
+    p.deudas = randomDouble(0, p.patrimonio * 0.7);     // Deudas hasta el 70% del patrimonio
+    std::string grupo;
     int lastDigits = std::stoi(p.id.substr(p.id.length()-2));
     if(lastDigits < 40 ){
-        p.grupoDeclaracion = "A";
+        grupo = "A";
     }
     else if (lastDigits > 39 && lastDigits < 80)
     {
-        p.grupoDeclaracion = "B";
+        grupo = "B";
     }
         else if (lastDigits > 79 && lastDigits < 100)
     {
-        p.grupoDeclaracion= "C";
+        grupo = "C";
     }
     
-    return p; // Retorna la estructura completa
+    p.grupoDeclaracion = grupo;
+    
+    return p;
 }
 
+/**
+ * Implementación de generarColeccion.
+ * 
+ * POR QUÉ: Generar un conjunto de n personas.
+ * CÓMO: Reservando espacio y agregando n personas generadas.
+ * PARA QUÉ: Crear datasets para pruebas.
+ */
 std::vector<Persona> generarColeccion(int n) {
     std::vector<Persona> personas;
-    // Reserva espacio para n personas (optimización)
-    personas.reserve(n);
+    personas.reserve(n); // Reserva espacio para n personas (eficiencia)
     
-    // Genera n personas y las añade al vector
     for (int i = 0; i < n; ++i) {
         personas.push_back(generarPersona());
     }
@@ -119,12 +141,96 @@ std::vector<Persona> generarColeccion(int n) {
     return personas;
 }
 
-const Persona* buscarPorID(const std::vector<Persona>& personas, const std::string& id) {
-    // Búsqueda lineal por ID (solución simple para colecciones medianas)
-    for (const auto& persona : personas) {
-        if (persona.id == id) { // Acceso directo al campo id
-            return &persona; // Retorna dirección si encuentra coincidencia
+Persona buscarLongevaPaisValor(std::vector<Persona> personas){
+    Persona personaLongeva = personas[0];
+    for(const auto &persona : personas){
+        auto [diaP,mesP,anioP] =  persona.fechaNacimiento;
+        auto [diaPL,mesPL,anioPL] =  personaLongeva.fechaNacimiento;
+        if(anioP!=anioPL){
+            personaLongeva = anioP < anioPL ? persona : personaLongeva; 
+        }
+        else if (mesP!=mesPL)
+        {
+            personaLongeva = mesP < mesPL ? persona : personaLongeva;
+        }
+        else{
+            personaLongeva = diaP < diaPL ? persona : personaLongeva;
         }
     }
-    return nullptr; // Retorna nulo si no encuentra
+    return personaLongeva;
+}
+
+const Persona* buscarLongevaPaisReferencia(const std::vector<Persona> &personas){
+    const Persona* personaLongeva = &personas[0];
+    for(const auto &persona : personas){
+        auto [diaP,mesP,anioP] =  persona.fechaNacimiento;
+        auto [diaPL,mesPL,anioPL] =  personaLongeva->fechaNacimiento;
+        if(anioP!=anioPL){
+            personaLongeva = anioP < anioPL ? &persona : personaLongeva;
+        }
+        else if (mesP!=mesPL)
+        {
+            personaLongeva = mesP < mesPL ? &persona : personaLongeva;
+        }
+        else{
+            personaLongeva = diaP < diaPL ? &persona : personaLongeva;
+        }
+    }
+    return personaLongeva;
+}
+
+std::unordered_map<std::string,const Persona*> mostrarPersonasLongevasCiudadReferencia(const std::vector<Persona> &personas){
+    std::unordered_map<std::string,const Persona*> personaLongevaCiudad;
+    
+    for(const auto &persona : personas){
+        auto [diaP,mesP,anioP] =  persona.fechaNacimiento;
+        //revisa si ya existe una llave para la ciudad evaluada
+        if(personaLongevaCiudad.count(persona.ciudadResidencia) == 0){
+            personaLongevaCiudad[persona.ciudadResidencia] = &persona;
+        }
+        else
+        {
+            auto [diaPL,mesPL,anioPL] =  personaLongevaCiudad[persona.ciudadResidencia]->fechaNacimiento;
+            if(anioP!=anioPL){
+                personaLongevaCiudad[persona.ciudadResidencia] = anioP < anioPL ? &persona : personaLongevaCiudad[persona.ciudadResidencia]; 
+            }
+            else if (mesP!=mesPL)
+            {
+                personaLongevaCiudad[persona.ciudadResidencia] = mesP < mesPL ? &persona : personaLongevaCiudad[persona.ciudadResidencia];
+            }
+            else{
+                personaLongevaCiudad[persona.ciudadResidencia] = diaP < diaPL ? &persona : personaLongevaCiudad[persona.ciudadResidencia];
+            }
+        }
+        
+    }
+    return personaLongevaCiudad;
+}
+std::unordered_map<std::string,Persona> mostrarPersonasLongevasCiudadValor(const std::vector<Persona> personas){
+    //arreglar no constructor default
+    std::unordered_map<std::string,Persona> personaLongevaCiudad;
+    
+    for(const auto &persona : personas){
+        auto [diaP,mesP,anioP] =  persona.fechaNacimiento;
+        //revisa si ya existe una llave para la ciudad evaluada
+        if(personaLongevaCiudad.count(persona.ciudadResidencia) == 0){
+            personaLongevaCiudad.emplace(persona.ciudadResidencia,persona);
+        }
+        else
+        {
+            auto [diaPL,mesPL,anioPL] =  personaLongevaCiudad[persona.ciudadResidencia].fechaNacimiento;
+            if(anioP!=anioPL){
+                personaLongevaCiudad[persona.ciudadResidencia] = anioP < anioPL ? persona : personaLongevaCiudad[persona.ciudadResidencia]; 
+            }
+            else if (mesP!=mesPL)
+            {
+                personaLongevaCiudad[persona.ciudadResidencia] = mesP < mesPL ? persona : personaLongevaCiudad[persona.ciudadResidencia];
+            }
+            else{
+                personaLongevaCiudad[persona.ciudadResidencia] = diaP < diaPL ? persona : personaLongevaCiudad[persona.ciudadResidencia];
+            }
+        }
+        
+    }
+    return personaLongevaCiudad;
 }

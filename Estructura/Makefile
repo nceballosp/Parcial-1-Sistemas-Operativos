@@ -2,7 +2,7 @@
 
 # Configuración del compilador
 CXX := g++
-CXXFLAGS := -Wall -Wextra -pedantic -std=c++14  # Usando C++14 para std::make_unique
+CXXFLAGS := -Wall -g -Wextra -pedantic -std=c++17  # Usando C++14 para std::make_unique
 
 # Archivos fuente y objetos
 SRCS := generador.cpp main.cpp monitor.cpp
