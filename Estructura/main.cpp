@@ -189,6 +189,109 @@ int main() {
                 monitor.registrar("Mostrar personas mas longevas por ciudad (Valor)", tiempo_busqueda, memoria_busqueda);
                 break;
             }
+            case 6: { 
+                if (!personas || personas->empty()) {
+                    std::cout << "\nNo hay datos disponibles. Use opción 0 primero.\n";
+                    break;
+                }                
+                
+                if(const Persona* encontrada = buscarMayorPatrimonioPaisReferencia(*personas)) {
+                    encontrada->mostrar();
+                } else {
+                    std::cout << "No se encontró persona " << "\n";
+                }
+                
+                double tiempo_busqueda = monitor.detener_tiempo();
+                long memoria_busqueda = monitor.obtener_memoria() - memoria_inicio;
+                monitor.registrar("Mostrar personas más rica del país(Referencia)", tiempo_busqueda, memoria_busqueda);
+                break;
+            }
+            case 7: {
+                if (!personas || personas->empty()) {
+                    std::cout << "\nNo hay datos disponibles. Use opción 0 primero.\n";
+                    break;
+                }                
+
+                Persona encontrada = buscarMayorPatrimonioPaisValor(*personas);
+                encontrada.mostrar();
+            
+                double tiempo_busqueda = monitor.detener_tiempo();
+                long memoria_busqueda = monitor.obtener_memoria() - memoria_inicio;
+                monitor.registrar("Mostrar personas más rica del país(Valor)", tiempo_busqueda, memoria_busqueda);
+                break;
+            }
+            case 8: {
+                if (!personas || personas->empty()) {
+                    std::cout << "\nNo hay datos disponibles. Use opción 0 primero.\n";
+                    break;
+                }                
+                std::unordered_map<std::string,const Persona*> resultado = buscarMayorPatrimonioCiudadReferencia(*personas);
+                for (const auto &pair : resultado)
+                {
+                    std::cout <<"\n" << pair.first << ":";
+                    pair.second->mostrar();
+                }
+                
+            
+                double tiempo_busqueda = monitor.detener_tiempo();
+                long memoria_busqueda = monitor.obtener_memoria() - memoria_inicio;
+                monitor.registrar("Mostrar personas mas ricas por ciudad (Referencia)", tiempo_busqueda, memoria_busqueda);
+                break;
+            }
+            case 9: {
+                if (!personas || personas->empty()) {
+                    std::cout << "\nNo hay datos disponibles. Use opción 0 primero.\n";
+                    break;
+                }                
+
+                std::unordered_map<std::string,Persona> resultado = buscarMayorPatrimonioCiudadValor(*personas);
+                for (const auto &pair : resultado)
+                {
+                    std::cout <<"\n" << pair.first << ":";
+                    pair.second.mostrar();
+                }
+                
+                double tiempo_busqueda = monitor.detener_tiempo();
+                long memoria_busqueda = monitor.obtener_memoria() - memoria_inicio;
+                monitor.registrar("Mostrar personas mas ricas por ciudad (Valor)", tiempo_busqueda, memoria_busqueda);
+                break;
+            }
+            case 10: {
+                if (!personas || personas->empty()) {
+                    std::cout << "\nNo hay datos disponibles. Use opción 0 primero.\n";
+                    break;
+                }                
+                std::unordered_map<std::string,const Persona*> resultado = buscarMayorPatrimonioGrupoReferencia(*personas);
+                for (const auto &pair : resultado)
+                {
+                    std::cout <<"\n" << pair.first << ":";
+                    pair.second->mostrar();
+                }
+                
+            
+                double tiempo_busqueda = monitor.detener_tiempo();
+                long memoria_busqueda = monitor.obtener_memoria() - memoria_inicio;
+                monitor.registrar("Mostrar personas mas ricas por Grupo (Referencia)", tiempo_busqueda, memoria_busqueda);
+                break;
+            }
+            case 11: {
+                if (!personas || personas->empty()) {
+                    std::cout << "\nNo hay datos disponibles. Use opción 0 primero.\n";
+                    break;
+                }                
+
+                std::unordered_map<std::string,Persona> resultado = buscarMayorPatrimonioGrupoValor(*personas);
+                for (const auto &pair : resultado)
+                {
+                    std::cout <<"\n" << pair.first << ":";
+                    pair.second.mostrar();
+                }
+                
+                double tiempo_busqueda = monitor.detener_tiempo();
+                long memoria_busqueda = monitor.obtener_memoria() - memoria_inicio;
+                monitor.registrar("Mostrar personas mas ricas por Grupo (Valor)", tiempo_busqueda, memoria_busqueda);
+                break;
+            }
                 
             case 18: // Mostrar estadísticas de rendimiento
                 monitor.mostrar_resumen();

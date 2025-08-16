@@ -234,3 +234,93 @@ std::unordered_map<std::string,Persona> mostrarPersonasLongevasCiudadValor(const
     }
     return personaLongevaCiudad;
 }
+const Persona* buscarMayorPatrimonioPaisReferencia(const std::vector<Persona> &personas){
+    const Persona* personaRica = &personas[0];
+    for(const auto &persona : personas){
+        double patrimonioNetoPR = personaRica->patrimonio - personaRica->deudas;
+        double patrimonioNetoP = persona.patrimonio - persona.deudas; 
+        if(patrimonioNetoPR<patrimonioNetoP){
+            personaRica = &persona;
+        }
+    }
+    return personaRica;
+}
+const Persona buscarMayorPatrimonioPaisValor(const std::vector<Persona> personas){
+    Persona personaRica = personas[0];
+    for(const auto &persona : personas){
+        double patrimonioNetoPR = personaRica.patrimonio - personaRica.deudas;
+        double patrimonioNetoP = persona.patrimonio - persona.deudas; 
+        if(patrimonioNetoPR<patrimonioNetoP){
+            personaRica = persona;
+        }
+    }
+    return personaRica;
+}
+std::unordered_map<std::string,const Persona*> buscarMayorPatrimonioCiudadReferencia(const std::vector<Persona> &personas){
+    std::unordered_map<std::string,const Persona*> personaRicaCiudad;
+    for(const auto &persona : personas){
+        if(personaRicaCiudad.count(persona.ciudadResidencia)==0){
+            personaRicaCiudad[persona.ciudadResidencia] = &persona; 
+        }
+        else{
+            const Persona* personaRica = personaRicaCiudad[persona.ciudadResidencia];
+            double patrimonioNetoPR = personaRica->patrimonio - personaRica->deudas;
+            double patrimonioNetoP = persona.patrimonio - persona.deudas; 
+            if(patrimonioNetoPR<patrimonioNetoP){
+                personaRicaCiudad[persona.ciudadResidencia] = &persona;
+            }
+        }
+    }
+    return personaRicaCiudad;
+}
+std::unordered_map<std::string,Persona> buscarMayorPatrimonioCiudadValor(const std::vector<Persona> personas){
+    std::unordered_map<std::string,Persona> personaRicaCiudad;
+    for(const auto &persona : personas){
+        if(personaRicaCiudad.count(persona.ciudadResidencia)==0){
+            personaRicaCiudad[persona.ciudadResidencia] = persona; 
+        }
+        else{
+            Persona personaRica = personaRicaCiudad[persona.ciudadResidencia];
+            double patrimonioNetoPR = personaRica.patrimonio - personaRica.deudas;
+            double patrimonioNetoP = persona.patrimonio - persona.deudas; 
+            if(patrimonioNetoPR<patrimonioNetoP){
+                personaRicaCiudad[persona.ciudadResidencia] = persona;
+            }
+        }
+    }
+    return personaRicaCiudad;
+}
+std::unordered_map<std::string,const Persona*> buscarMayorPatrimonioGrupoReferencia(const std::vector<Persona> &personas){
+    std::unordered_map<std::string,const Persona*> personaRicaGrupo;
+    for(const auto &persona : personas){
+        if(personaRicaGrupo.count(persona.grupoDeclaracion)==0){
+            personaRicaGrupo[persona.grupoDeclaracion] = &persona; 
+        }
+        else{
+            const Persona* personaRica = personaRicaGrupo[persona.grupoDeclaracion];
+            double patrimonioNetoPR = personaRica->patrimonio - personaRica->deudas;
+            double patrimonioNetoP = persona.patrimonio - persona.deudas; 
+            if(patrimonioNetoPR<patrimonioNetoP){
+                personaRicaGrupo[persona.grupoDeclaracion] = &persona;
+            }
+        }
+    }
+    return personaRicaGrupo;
+}
+std::unordered_map<std::string,Persona> buscarMayorPatrimonioGrupoValor(const std::vector<Persona> personas){
+    std::unordered_map<std::string,Persona> personaRicaGrupo;
+    for(const auto &persona : personas){
+        if(personaRicaGrupo.count(persona.grupoDeclaracion)==0){
+            personaRicaGrupo[persona.grupoDeclaracion] = persona; 
+        }
+        else{
+            Persona personaRica = personaRicaGrupo[persona.grupoDeclaracion];
+            double patrimonioNetoPR = personaRica.patrimonio - personaRica.deudas;
+            double patrimonioNetoP = persona.patrimonio - persona.deudas; 
+            if(patrimonioNetoPR<patrimonioNetoP){
+                personaRicaGrupo[persona.grupoDeclaracion] = persona;
+            }
+        }
+    }
+    return personaRicaGrupo;
+}
