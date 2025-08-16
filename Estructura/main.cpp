@@ -30,13 +30,15 @@ void mostrarMenu() {
     std::cout << "\n11. Mostrar persona con mayor patrimonio por grupo de declaración(Valor)";
     std::cout << "\n12. Listar declarantes de renta(Referencia)";   
     std::cout << "\n13. Listar declarantes de renta(Valor)";   
-    std::cout << "\n14. Pregunta grupo 1(Referencia)";   
-    std::cout << "\n15. Pregunta grupo 1(Valor)";   
-    std::cout << "\n16. Pregunta grupo 2(Referencia)";   
-    std::cout << "\n17. Pregunta grupo 2(Valor)";   
-    std::cout << "\n18. Mostrar estadisticas";
-    std::cout << "\n19. Exportar estadisticas";
-    std::cout << "\n20. Salir";
+    std::cout << "\n14. Persona con mayor endeudamiento en el país(Referencia)";   
+    std::cout << "\n15. Persona con mayor endeudamiento en el país(Valor)";   
+    std::cout << "\n16. Ciudad con mayor patrimonio agregado(Referencia)";   
+    std::cout << "\n17. Ciudad con mayor patrimonio agregado(Valor)";   
+    std::cout << "\n18. Personas tienen patrimonio superior a 1.000 millones(Referencia)";   
+    std::cout << "\n19. Personas tienen patrimonio superior a 1.000 millones(Valor)";   
+    std::cout << "\n20. Mostrar estadisticas";
+    std::cout << "\n21. Exportar estadisticas";
+    std::cout << "\n22. Salir";
     std::cout << "\nSeleccione una opción: ";
 }
 
@@ -293,15 +295,15 @@ int main() {
                 break;
             }
                 
-            case 18: // Mostrar estadísticas de rendimiento
+            case 20: // Mostrar estadísticas de rendimiento
                 monitor.mostrar_resumen();
                 break;
                 
-            case 19: // Exportar estadísticas a CSV
+            case 21: // Exportar estadísticas a CSV
                 monitor.exportar_csv();
                 break;
                 
-            case 20: // Salir
+            case 22: // Salir
                 std::cout << "Saliendo...\n";
                 break;
                 
@@ -316,7 +318,7 @@ int main() {
             monitor.mostrar_estadistica("Opción " + std::to_string(opcion), tiempo, memoria);
         }
         
-    } while(opcion != 20);
+    } while(opcion != 22);
     
     return 0;
 }
