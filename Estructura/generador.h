@@ -87,4 +87,12 @@ const std::unordered_map<std::string,std::vector<const Persona*>> listarPersonas
 
 std::unordered_map<std::string,std::vector<Persona>> listarPersonasGrupoValor(std::vector<Persona> personas);
 
+const Persona* buscarMayorDeudaPaisReferencia(const std::vector<Persona> &personas);
+
+Persona buscarMayorDeudaPaisValor(std::vector<Persona> personas);
+
+const std::pair<std::string,unsigned long> buscarCiudadMayorPatrimonioReferencia(const std::vector<Persona> &personas);
+
+const std::pair<std::string,unsigned long> buscarCiudadMayorPatrimonioValor(const std::vector<Persona> personas);
+
 #endif // GENERADOR_H

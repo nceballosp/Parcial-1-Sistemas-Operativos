@@ -141,7 +141,7 @@ std::vector<Persona> generarColeccion(int n) {
     return personas;
 }
 
-Persona buscarLongevaPaisValor(std::vector<Persona> personas){
+Persona buscarLongevaPaisValor(const std::vector<Persona> personas){
     Persona personaLongeva = personas[0];
     for(const auto &persona : personas){
         auto [diaP,mesP,anioP] =  persona.fechaNacimiento;
@@ -337,4 +337,67 @@ std::unordered_map<std::string,std::vector<Persona>> listarPersonasGrupoValor(st
          personasPorGrupo[persona.grupoDeclaracion].push_back(persona);
     }
     return personasPorGrupo;
+}
+const Persona* buscarMayorDeudaPaisReferencia(const std::vector<Persona> &personas){
+    const Persona* personaEndeudada = &personas[0];
+    for(const auto &persona : personas){
+        if(personaEndeudada->deudas<persona.deudas){
+            personaEndeudada = &persona;
+        }
+    }
+    return personaEndeudada;
+}
+Persona buscarMayorDeudaPaisValor(std::vector<Persona> personas){
+    Persona personaEndeudada = personas[0];
+    for(const auto &persona : personas){
+        if(personaEndeudada.deudas<persona.deudas){
+            personaEndeudada = persona;
+        }
+    }
+    return personaEndeudada;
+}
+
+const std::pair<std::string,unsigned long> buscarCiudadMayorPatrimonioReferencia(const std::vector<Persona> &personas){
+    std::pair<std::string,unsigned long> ciudadRica = {"",0};
+    std::unordered_map<std::string,unsigned long> ciudadesPatrimonio;
+    for(const auto& persona:personas){
+        if (ciudadesPatrimonio.count(persona.ciudadResidencia)==0)
+        {
+            ciudadesPatrimonio[persona.ciudadResidencia] = persona.patrimonio;
+        }
+        else{
+            ciudadesPatrimonio[persona.ciudadResidencia] += persona.patrimonio;
+        }
+    }
+    for(auto const &pair:ciudadesPatrimonio){
+        if(pair.second > ciudadRica.second){
+            ciudadRica = pair;
+        }
+
+    }
+
+    
+    return ciudadRica;
+}
+const std::pair<std::string,unsigned long> buscarCiudadMayorPatrimonioValor(const std::vector<Persona> personas){
+    std::pair<std::string,unsigned long> ciudadRica = {"",0};
+    std::unordered_map<std::string,unsigned long> ciudadesPatrimonio;
+    for(const auto& persona:personas){
+        if (ciudadesPatrimonio.count(persona.ciudadResidencia)==0)
+        {
+            ciudadesPatrimonio[persona.ciudadResidencia] = persona.patrimonio;
+        }
+        else{
+            ciudadesPatrimonio[persona.ciudadResidencia] += persona.patrimonio;
+        }
+    }
+    for(auto const &pair:ciudadesPatrimonio){
+        if(pair.second > ciudadRica.second){
+            ciudadRica = pair;
+        }
+
+    }
+
+    
+    return ciudadRica;
 }
