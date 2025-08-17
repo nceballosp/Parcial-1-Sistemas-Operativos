@@ -324,3 +324,17 @@ std::unordered_map<std::string,Persona> buscarMayorPatrimonioGrupoValor(const st
     }
     return personaRicaGrupo;
 }
+const std::unordered_map<std::string,std::vector<const Persona*>> listarPersonasGrupoReferencia(const std::vector<Persona> &personas){
+    std::unordered_map<std::string,std::vector<const Persona*>> personasPorGrupo;
+    for(const auto &persona : personas){
+         personasPorGrupo[persona.grupoDeclaracion].push_back(&persona);
+    }
+    return personasPorGrupo;
+}
+std::unordered_map<std::string,std::vector<Persona>> listarPersonasGrupoValor(std::vector<Persona> personas){
+    std::unordered_map<std::string,std::vector<Persona>> personasPorGrupo;
+    for(const auto &persona : personas){
+         personasPorGrupo[persona.grupoDeclaracion].push_back(persona);
+    }
+    return personasPorGrupo;
+}

@@ -83,4 +83,8 @@ std::unordered_map<std::string,const Persona*> buscarMayorPatrimonioGrupoReferen
 
 std::unordered_map<std::string,Persona> buscarMayorPatrimonioGrupoValor(const std::vector<Persona> personas);
 
+const std::unordered_map<std::string,std::vector<const Persona*>> listarPersonasGrupoReferencia(const std::vector<Persona> &personas);
+
+std::unordered_map<std::string,std::vector<Persona>> listarPersonasGrupoValor(std::vector<Persona> personas);
+
 #endif // GENERADOR_H

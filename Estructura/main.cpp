@@ -72,9 +72,11 @@ int main() {
         
         switch(opcion) {
             case 0: { // Crear nuevo conjunto de datos
+                monitor.detener_tiempo();
                 int n;
                 std::cout << "\nIngrese el número de personas a generar: ";
                 std::cin >> n;
+                monitor.iniciar_tiempo();
                 
                 if (n <= 0) {
                     std::cout << "Error: Debe generar al menos 1 persona\n";
@@ -294,7 +296,52 @@ int main() {
                 monitor.registrar("Mostrar personas mas ricas por Grupo (Valor)", tiempo_busqueda, memoria_busqueda);
                 break;
             }
+            case 12: {
+                if (!personas || personas->empty()) {
+                    std::cout << "\nNo hay datos disponibles. Use opción 0 primero.\n";
+                    break;
+                }                
+                auto resultado = listarPersonasGrupoReferencia(*personas);
+                for (const auto &pair : resultado)
+                {
+                    std::cout << "Personas del grupo:" << pair.first << "# de personas:" << pair.second.size() << "\n";
+                    for (const auto &persona : pair.second)
+                    {
+                        persona->mostrarResumen();
+                        std::cout << "\n";
+                    }
+                    
+                }
                 
+                
+            
+                double tiempo_busqueda = monitor.detener_tiempo();
+                long memoria_busqueda = monitor.obtener_memoria() - memoria_inicio;
+                monitor.registrar("Listar personas por Grupo (Referencia)", tiempo_busqueda, memoria_busqueda);
+                break;
+            }
+            case 13: {
+                if (!personas || personas->empty()) {
+                    std::cout << "\nNo hay datos disponibles. Use opción 0 primero.\n";
+                    break;
+                }                
+                auto resultado = listarPersonasGrupoValor(*personas);
+                for (const auto &pair : resultado)
+                {
+                    std::cout << "Personas del grupo:" << pair.first << "| # de personas:" << pair.second.size() << "\n";
+                    for (const auto &persona : pair.second)
+                    {
+                        persona.mostrarResumen();
+                        std::cout << "\n";
+                    }
+                    
+                }
+                double tiempo_busqueda = monitor.detener_tiempo();
+                long memoria_busqueda = monitor.obtener_memoria() - memoria_inicio;
+                monitor.registrar("Listar personas por grupo (Valor)", tiempo_busqueda, memoria_busqueda);
+                break;
+            }
+
             case 20: // Mostrar estadísticas de rendimiento
                 monitor.mostrar_resumen();
                 break;
@@ -312,11 +359,6 @@ int main() {
         }
         
         // Mostrar estadísticas de la operación (excepto para opciones 4,5,6)
-        if (opcion >= 0 && opcion <= 3) {
-            double tiempo = monitor.detener_tiempo();
-            long memoria = monitor.obtener_memoria() - memoria_inicio;
-            monitor.mostrar_estadistica("Opción " + std::to_string(opcion), tiempo, memoria);
-        }
         
     } while(opcion != 22);
     
