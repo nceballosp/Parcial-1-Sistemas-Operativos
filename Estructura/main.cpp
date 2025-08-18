@@ -62,7 +62,11 @@ int main() {
     do {
         mostrarMenu();
         std::cin >> opcion;
-        
+        if(!std::cin){
+            std::cin.clear();
+            std::cin.ignore();
+            continue;
+        }
         // Variables locales para uso en los casos
         size_t tam = 0;
         
@@ -75,6 +79,11 @@ int main() {
                 int n;
                 std::cout << "\nIngrese el número de personas a generar: ";
                 std::cin >> n;
+                if(!std::cin){
+                std::cin.clear();
+                std::cin.ignore();
+                continue;
+                }
                 monitor.iniciar_tiempo();
                 
                 if (n <= 0) {
