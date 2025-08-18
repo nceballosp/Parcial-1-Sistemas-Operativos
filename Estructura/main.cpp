@@ -435,7 +435,7 @@ int main() {
             
                 double tiempo_busqueda = monitor.detener_tiempo();
                 long memoria_busqueda = monitor.obtener_memoria() - memoria_inicio;
-                monitor.registrar("Mostrar ciudad con mayor patrimonio(Valor)", tiempo_busqueda, memoria_busqueda);
+                monitor.registrar("Personas tienen patrimonio superior a 1.000 millones(Valor)", tiempo_busqueda, memoria_busqueda);
                 break;
             }
 
