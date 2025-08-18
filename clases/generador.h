@@ -71,4 +71,32 @@ std::unordered_map<std::string,const Persona*> mostrarPersonasLongevasCiudadRefe
 
 std::unordered_map<std::string,Persona> mostrarPersonasLongevasCiudadValor(const std::vector<Persona> personas);
 
+const Persona* buscarMayorPatrimonioPaisReferencia(const std::vector<Persona> &personas);
+
+const Persona buscarMayorPatrimonioPaisValor(const std::vector<Persona> personas);
+
+std::unordered_map<std::string,const Persona*> buscarMayorPatrimonioCiudadReferencia(const std::vector<Persona> &personas);
+
+std::unordered_map<std::string,Persona> buscarMayorPatrimonioCiudadValor(const std::vector<Persona> personas);
+
+std::unordered_map<std::string,const Persona*> buscarMayorPatrimonioGrupoReferencia(const std::vector<Persona> &personas);
+
+std::unordered_map<std::string,Persona> buscarMayorPatrimonioGrupoValor(const std::vector<Persona> personas);
+
+const std::unordered_map<std::string,std::vector<const Persona*>> listarPersonasGrupoReferencia(const std::vector<Persona> &personas);
+
+std::unordered_map<std::string,std::vector<Persona>> listarPersonasGrupoValor(std::vector<Persona> personas);
+
+const Persona* buscarMayorDeudaPaisReferencia(const std::vector<Persona> &personas);
+
+Persona buscarMayorDeudaPaisValor(std::vector<Persona> personas);
+
+const std::pair<std::string,long double> buscarCiudadMayorPatrimonioReferencia(const std::vector<Persona> &personas);
+
+const std::pair<std::string,long double> buscarCiudadMayorPatrimonioValor(const std::vector<Persona> personas);
+
+std::unordered_map<std::string,std::vector<const Persona*>> listarPersonasConPatrimonioMayor1000Referencia(const std::vector<Persona> &personas);
+
+std::unordered_map<std::string,std::vector<Persona>> listarPersonasConPatrimonioMayor1000Valor(std::vector<Persona> personas);
+
 #endif // GENERADOR_H

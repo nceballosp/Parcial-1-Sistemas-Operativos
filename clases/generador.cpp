@@ -233,3 +233,191 @@ std::unordered_map<std::string,Persona> mostrarPersonasLongevasCiudadValor(const
     }
     return personaLongevaCiudad;
 }
+
+const Persona* buscarMayorPatrimonioPaisReferencia(const std::vector<Persona> &personas){
+    const Persona* personaRica = &personas[0];
+    for(const auto &persona : personas){
+        double patrimonioNetoPR = personaRica->getPatrimonio() - personaRica->getDeudas();
+        double patrimonioNetoP = persona.getPatrimonio() - persona.getDeudas(); 
+        if(patrimonioNetoPR<patrimonioNetoP){
+            personaRica = &persona;
+        }
+    }
+    return personaRica;
+}
+const Persona buscarMayorPatrimonioPaisValor(const std::vector<Persona> personas){
+    Persona personaRica = personas[0];
+    for(const auto &persona : personas){
+        double patrimonioNetoPR = personaRica.getPatrimonio() - personaRica.getDeudas();
+        double patrimonioNetoP = persona.getPatrimonio() - persona.getDeudas(); 
+        if(patrimonioNetoPR<patrimonioNetoP){
+            personaRica = persona;
+        }
+    }
+    return personaRica;
+}
+std::unordered_map<std::string,const Persona*> buscarMayorPatrimonioCiudadReferencia(const std::vector<Persona> &personas){
+    std::unordered_map<std::string,const Persona*> personaRicaCiudad;
+    for(const auto &persona : personas){
+        if(personaRicaCiudad.count(persona.getCiudadNacimiento())==0){
+            personaRicaCiudad[persona.getCiudadNacimiento()] = &persona; 
+        }
+        else{
+            const Persona* personaRica = personaRicaCiudad[persona.getCiudadNacimiento()];
+            double patrimonioNetoPR = personaRica->getPatrimonio() - personaRica->getDeudas();
+            double patrimonioNetoP = persona.getPatrimonio() - persona.getDeudas(); 
+            if(patrimonioNetoPR<patrimonioNetoP){
+                personaRicaCiudad[persona.getCiudadNacimiento()] = &persona;
+            }
+        }
+    }
+    return personaRicaCiudad;
+}
+std::unordered_map<std::string,Persona> buscarMayorPatrimonioCiudadValor(const std::vector<Persona> personas){
+    std::unordered_map<std::string,Persona> personaRicaCiudad;
+    for(const auto &persona : personas){
+        if(personaRicaCiudad.count(persona.getCiudadNacimiento())==0){
+            personaRicaCiudad[persona.getCiudadNacimiento()] = persona; 
+        }
+        else{
+            Persona personaRica = personaRicaCiudad[persona.getCiudadNacimiento()];
+            double patrimonioNetoPR = personaRica.getPatrimonio() - personaRica.getDeudas();
+            double patrimonioNetoP = persona.getPatrimonio() - persona.getDeudas(); 
+            if(patrimonioNetoPR<patrimonioNetoP){
+                personaRicaCiudad[persona.getCiudadNacimiento()] = persona;
+            }
+        }
+    }
+    return personaRicaCiudad;
+}
+std::unordered_map<std::string,const Persona*> buscarMayorPatrimonioGrupoReferencia(const std::vector<Persona> &personas){
+    std::unordered_map<std::string,const Persona*> personaRicaGrupo;
+    for(const auto &persona : personas){
+        if(personaRicaGrupo.count(persona.getGrupoDeclaracion())==0){
+            personaRicaGrupo[persona.getGrupoDeclaracion()] = &persona; 
+        }
+        else{
+            const Persona* personaRica = personaRicaGrupo[persona.getGrupoDeclaracion()];
+            double patrimonioNetoPR = personaRica->getPatrimonio() - personaRica->getDeudas();
+            double patrimonioNetoP = persona.getPatrimonio() - persona.getDeudas(); 
+            if(patrimonioNetoPR<patrimonioNetoP){
+                personaRicaGrupo[persona.getGrupoDeclaracion()] = &persona;
+            }
+        }
+    }
+    return personaRicaGrupo;
+}
+std::unordered_map<std::string,Persona> buscarMayorPatrimonioGrupoValor(const std::vector<Persona> personas){
+    std::unordered_map<std::string,Persona> personaRicaGrupo;
+    for(const auto &persona : personas){
+        if(personaRicaGrupo.count(persona.getGrupoDeclaracion())==0){
+            personaRicaGrupo[persona.getGrupoDeclaracion()] = persona; 
+        }
+        else{
+            Persona personaRica = personaRicaGrupo[persona.getGrupoDeclaracion()];
+            double patrimonioNetoPR = personaRica.getPatrimonio() - personaRica.getDeudas();
+            double patrimonioNetoP = persona.getPatrimonio() - persona.getDeudas(); 
+            if(patrimonioNetoPR<patrimonioNetoP){
+                personaRicaGrupo[persona.getGrupoDeclaracion()] = persona;
+            }
+        }
+    }
+    return personaRicaGrupo;
+}
+const std::unordered_map<std::string,std::vector<const Persona*>> listarPersonasGrupoReferencia(const std::vector<Persona> &personas){
+    std::unordered_map<std::string,std::vector<const Persona*>> personasPorGrupo;
+    for(const auto &persona : personas){
+         personasPorGrupo[persona.getGrupoDeclaracion()].push_back(&persona);
+    }
+    return personasPorGrupo;
+}
+std::unordered_map<std::string,std::vector<Persona>> listarPersonasGrupoValor(std::vector<Persona> personas){
+    std::unordered_map<std::string,std::vector<Persona>> personasPorGrupo;
+    for(const auto &persona : personas){
+         personasPorGrupo[persona.getGrupoDeclaracion()].push_back(persona);
+    }
+    return personasPorGrupo;
+}
+const Persona* buscarMayorDeudaPaisReferencia(const std::vector<Persona> &personas){
+    const Persona* personaEndeudada = &personas[0];
+    for(const auto &persona : personas){
+        if(personaEndeudada->getDeudas()<persona.getDeudas()){
+            personaEndeudada = &persona;
+        }
+    }
+    return personaEndeudada;
+}
+Persona buscarMayorDeudaPaisValor(std::vector<Persona> personas){
+    Persona personaEndeudada = personas[0];
+    for(const auto &persona : personas){
+        if(personaEndeudada.getDeudas()<persona.getDeudas()){
+            personaEndeudada = persona;
+        }
+    }
+    return personaEndeudada;
+}
+
+const std::pair<std::string,long double> buscarCiudadMayorPatrimonioReferencia(const std::vector<Persona> &personas){
+    std::pair<std::string,long double> ciudadRica = {"",0};
+    std::unordered_map<std::string,long double> ciudadesPatrimonio;
+    for(const auto& persona:personas){
+        if (ciudadesPatrimonio.count(persona.getCiudadNacimiento())==0)
+        {
+            ciudadesPatrimonio[persona.getCiudadNacimiento()] = persona.getPatrimonio();
+        }
+        else{
+            ciudadesPatrimonio[persona.getCiudadNacimiento()] += persona.getPatrimonio();
+        }
+    }
+    for(auto const &pair:ciudadesPatrimonio){
+        if(pair.second > ciudadRica.second){
+            ciudadRica = pair;
+        }
+
+    }
+
+    
+    return ciudadRica;
+}
+const std::pair<std::string,long double> buscarCiudadMayorPatrimonioValor(const std::vector<Persona> personas){
+    std::pair<std::string,long double> ciudadRica = {"",0};
+    std::unordered_map<std::string,long double> ciudadesPatrimonio;
+    for(const auto& persona:personas){
+        if (ciudadesPatrimonio.count(persona.getCiudadNacimiento())==0)
+        {
+            ciudadesPatrimonio[persona.getCiudadNacimiento()] = persona.getPatrimonio();
+        }
+        else{
+            ciudadesPatrimonio[persona.getCiudadNacimiento()] += persona.getPatrimonio();
+        }
+    }
+    for(auto const &pair:ciudadesPatrimonio){
+        if(pair.second > ciudadRica.second){
+            ciudadRica = pair;
+        }
+
+    }
+    return ciudadRica;
+}
+
+std::unordered_map<std::string,std::vector<const Persona*>> listarPersonasConPatrimonioMayor1000Referencia(const std::vector<Persona> &personas){
+    std::unordered_map<std::string,std::vector<const Persona*>> personaRica;
+    long long umbral = 1'000'000'000LL;
+    for(const auto &persona : personas){
+        if (persona.getPatrimonio() > umbral) {
+            personaRica[persona.getCiudadNacimiento()].push_back(&persona);
+        }
+    }
+    return personaRica;
+}
+
+std::unordered_map<std::string,std::vector<Persona>> listarPersonasConPatrimonioMayor1000Valor(std::vector<Persona> personas){
+    std::unordered_map<std::string,std::vector<Persona>> personaRica;
+    long long umbral = 1'000'000'000LL;
+    for(const auto &persona : personas){
+        if (persona.getPatrimonio() > umbral) {
+            personaRica[persona.getCiudadNacimiento()].push_back(persona);
+        }
+    }
+    return personaRica;
+}
