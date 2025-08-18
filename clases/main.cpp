@@ -76,6 +76,12 @@ int main() {
                 int n;
                 std::cout << "\nIngrese el número de personas a generar: ";
                 std::cin >> n;
+                if(!std::cin){
+                std::cin.clear();
+                std::cin.ignore();
+                continue;
+                }
+                monitor.iniciar_tiempo();
                 
                 if (n <= 0) {
                     std::cout << "Error: Debe generar al menos 1 persona\n";
@@ -135,7 +141,7 @@ int main() {
                 
                 double tiempo_busqueda = monitor.detener_tiempo();
                 long memoria_busqueda = monitor.obtener_memoria() - memoria_inicio;
-                monitor.registrar("Buscar por referencia", tiempo_busqueda, memoria_busqueda);
+                monitor.registrar("Mostrar personas más longeva del país(Referencia)", tiempo_busqueda, memoria_busqueda);
                 break;
             }
             case 3: {
@@ -149,7 +155,7 @@ int main() {
             
                 double tiempo_busqueda = monitor.detener_tiempo();
                 long memoria_busqueda = monitor.obtener_memoria() - memoria_inicio;
-                monitor.registrar("Buscar por valor", tiempo_busqueda, memoria_busqueda);
+                monitor.registrar("Mostrar personas más longeva del país(Valor)", tiempo_busqueda, memoria_busqueda);
                 break;
             }
             case 4: {
