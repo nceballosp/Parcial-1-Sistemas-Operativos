@@ -311,8 +311,6 @@ int main() {
                     }
                     
                 }
-                
-                
             
                 double tiempo_busqueda = monitor.detener_tiempo();
                 long memoria_busqueda = monitor.obtener_memoria() - memoria_inicio;
@@ -393,6 +391,47 @@ int main() {
                 auto resultado = buscarCiudadMayorPatrimonioValor(*personas);
                 std::cout<< "Ciudad con mayor patrimonio: " << resultado.first << " = " << resultado.second << "\n";
                 
+            
+                double tiempo_busqueda = monitor.detener_tiempo();
+                long memoria_busqueda = monitor.obtener_memoria() - memoria_inicio;
+                monitor.registrar("Mostrar ciudad con mayor patrimonio(Valor)", tiempo_busqueda, memoria_busqueda);
+                break;
+            }
+            case 18: {
+                if (!personas || personas->empty()) {
+                    std::cout << "\nNo hay datos disponibles. Use opción 0 primero.\n";
+                    break;
+                }                
+                auto resultado = listarPersonasConPatrimonioMayor1000Referencia(*personas);
+                std::cout<< "Personas tienen patrimonio superior a 1.000 millones(Referencia)\n";
+                for (const auto &pair : resultado)
+                {
+                    std::cout << "Ciudad:" << pair.first << "\n";
+                    for (const auto& persona : pair.second)
+                    {
+                        std::cout<< persona->nombre<<" "<<persona->apellido<<" Patrimonio: "<<persona->patrimonio <<"\n"; 
+                    }
+                }
+                double tiempo_busqueda = monitor.detener_tiempo();
+                long memoria_busqueda = monitor.obtener_memoria() - memoria_inicio;
+                monitor.registrar("Personas tienen patrimonio superior a 1.000 millones(Referencia)", tiempo_busqueda, memoria_busqueda);
+                break;
+            }
+            case 19: {
+                if (!personas || personas->empty()) {
+                    std::cout << "\nNo hay datos disponibles. Use opción 0 primero.\n";
+                    break;
+                }                
+                auto resultado = listarPersonasConPatrimonioMayor1000Valor(*personas);
+                std::cout<< "Personas tienen patrimonio superior a 1.000 millones(Valor) "<< "\n";
+                for (const auto &pair : resultado)
+                {
+                    std::cout << "Ciudad:" << pair.first << "\n";
+                    for (const auto& persona : pair.second)
+                    {
+                        std::cout<< persona.nombre<<" "<<persona.apellido<<" Patrimonio: "<<persona.patrimonio <<"\n"; 
+                    }
+                }
             
                 double tiempo_busqueda = monitor.detener_tiempo();
                 long memoria_busqueda = monitor.obtener_memoria() - memoria_inicio;

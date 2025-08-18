@@ -357,9 +357,9 @@ Persona buscarMayorDeudaPaisValor(std::vector<Persona> personas){
     return personaEndeudada;
 }
 
-const std::pair<std::string,unsigned long> buscarCiudadMayorPatrimonioReferencia(const std::vector<Persona> &personas){
-    std::pair<std::string,unsigned long> ciudadRica = {"",0};
-    std::unordered_map<std::string,unsigned long> ciudadesPatrimonio;
+const std::pair<std::string,long double> buscarCiudadMayorPatrimonioReferencia(const std::vector<Persona> &personas){
+    std::pair<std::string,long double> ciudadRica = {"",0};
+    std::unordered_map<std::string,long double> ciudadesPatrimonio;
     for(const auto& persona:personas){
         if (ciudadesPatrimonio.count(persona.ciudadResidencia)==0)
         {
@@ -379,9 +379,9 @@ const std::pair<std::string,unsigned long> buscarCiudadMayorPatrimonioReferencia
     
     return ciudadRica;
 }
-const std::pair<std::string,unsigned long> buscarCiudadMayorPatrimonioValor(const std::vector<Persona> personas){
-    std::pair<std::string,unsigned long> ciudadRica = {"",0};
-    std::unordered_map<std::string,unsigned long> ciudadesPatrimonio;
+const std::pair<std::string,long double> buscarCiudadMayorPatrimonioValor(const std::vector<Persona> personas){
+    std::pair<std::string,long double> ciudadRica = {"",0};
+    std::unordered_map<std::string,long double> ciudadesPatrimonio;
     for(const auto& persona:personas){
         if (ciudadesPatrimonio.count(persona.ciudadResidencia)==0)
         {
@@ -397,7 +397,27 @@ const std::pair<std::string,unsigned long> buscarCiudadMayorPatrimonioValor(cons
         }
 
     }
-
-    
     return ciudadRica;
+}
+
+std::unordered_map<std::string,std::vector<const Persona*>> listarPersonasConPatrimonioMayor1000Referencia(const std::vector<Persona> &personas){
+    std::unordered_map<std::string,std::vector<const Persona*>> personaRica;
+    long long umbral = 1'000'000'000LL;
+    for(const auto &persona : personas){
+        if (persona.patrimonio > umbral) {
+            personaRica[persona.ciudadResidencia].push_back(&persona);
+        }
+    }
+    return personaRica;
+}
+
+std::unordered_map<std::string,std::vector<Persona>> listarPersonasConPatrimonioMayor1000Valor(std::vector<Persona> personas){
+    std::unordered_map<std::string,std::vector<Persona>> personaRica;
+    long long umbral = 1'000'000'000LL;
+    for(const auto &persona : personas){
+        if (persona.patrimonio > umbral) {
+            personaRica[persona.ciudadResidencia].push_back(persona);
+        }
+    }
+    return personaRica;
 }

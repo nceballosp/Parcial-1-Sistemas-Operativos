@@ -91,8 +91,12 @@ const Persona* buscarMayorDeudaPaisReferencia(const std::vector<Persona> &person
 
 Persona buscarMayorDeudaPaisValor(std::vector<Persona> personas);
 
-const std::pair<std::string,unsigned long> buscarCiudadMayorPatrimonioReferencia(const std::vector<Persona> &personas);
+const std::pair<std::string,long double> buscarCiudadMayorPatrimonioReferencia(const std::vector<Persona> &personas);
 
-const std::pair<std::string,unsigned long> buscarCiudadMayorPatrimonioValor(const std::vector<Persona> personas);
+const std::pair<std::string,long double> buscarCiudadMayorPatrimonioValor(const std::vector<Persona> personas);
+
+std::unordered_map<std::string,std::vector<const Persona*>> listarPersonasConPatrimonioMayor1000Referencia(const std::vector<Persona> &personas);
+
+std::unordered_map<std::string,std::vector<Persona>> listarPersonasConPatrimonioMayor1000Valor(std::vector<Persona> personas);
 
 #endif // GENERADOR_H
