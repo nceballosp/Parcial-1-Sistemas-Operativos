@@ -21,7 +21,7 @@ Cuando los datos exceden la RAM, usar (mmap) o memoria virtual, que permite mape
 | Mostrar personas más longeva del país(Referencia) | 0 KB | 0 KB | 68.90 ms | 16.47 ms |
 | Mostrar personas más longeva del país(Valor): | 14460 KB | 14472 KB | 376.26 ms | 344.01 ms  |
 | Mostrar personas más longevas por ciudad (Referencia): | 0 KB | 0 KB | 848.17 ms | 174.19 ms |
-| Mostrar personas más longevas por ciudad (Valor): | 4 KB | 14520 KB | 1138.03 ms | 411.17 ms  |
+| Mostrar personas más longevas por ciudad (Valor): | 14600 KB | 14520 KB | 1138.03 ms | 411.17 ms  |
 | Mostrar personas más rica del país(Referencia) | 0 KB | 0 KB | 24.87 ms | 20.53 ms |
 | Mostrar personas más rica del país(Valor) | 14472 KB | 14572 KB | 248.95 ms | 228.07 ms |
 | Mostrar personas más ricas por ciudad (Referencia) | 0 KB | 0 KB | 585.14 ms | 92.58 ms |
